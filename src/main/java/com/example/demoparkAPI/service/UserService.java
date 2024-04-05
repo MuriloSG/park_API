@@ -15,4 +15,18 @@ public class UserService {
   public User save(User user) {
     return userRepository.save(user);
   }
+
+  @Transactional(readOnly = true)
+  public User findById(Long id) {
+    return userRepository.findById(id).orElseThrow(
+            () -> new RuntimeException("User not found.")
+    );
+  }
+
+  @Transactional
+  public User alterPassword(Long id, String password) {
+    User user = findById(id);
+    user.setPassword(password);
+    return user;
+  }
 }
